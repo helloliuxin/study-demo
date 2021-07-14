@@ -1,7 +1,7 @@
 /*
  * @Author: liuxin
  * @Date: 2021-07-14 21:20:08
- * @LastEditTime: 2021-07-14 21:50:32
+ * @LastEditTime: 2021-07-14 23:47:34
  * @LastEditors: liuxin
  * @Description: 路由
  */
@@ -23,6 +23,14 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "NumBaseConversion" */ "../views/NumBaseConversion.vue"
+      ),
+  },
+  {
+    path: "/imgGrayscaleProcessing",
+    name: "imgGrayscaleProcessing",
+    component: () =>
+      import(
+        /* webpackChunkName: "ImgGrayscaleProcessing" */ "../views/ImgGrayscaleProcessing.vue"
       ),
   },
 ];

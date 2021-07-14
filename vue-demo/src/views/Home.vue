@@ -1,13 +1,14 @@
 <!--
  * @Author: liuxin
  * @Date: 2021-07-14 21:32:48
- * @LastEditTime: 2021-07-14 22:25:38
+ * @LastEditTime: 2021-07-14 23:46:11
  * @LastEditors: liuxin
  * @Description: 主页
 -->
 <template>
   <div class="menu">
-    <a href="/#/NumBaseConversion"><div class="item">NumBaseConversion</div></a>
+    <a href="/#/NumBaseConversion"><div class="item">进制转换</div></a>
+    <a href="/#/ImgGrayscaleProcessing"><div class="item">图片灰度处理</div></a>
   </div>
 </template>
 
