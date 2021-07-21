@@ -33,6 +33,11 @@ const routes = [
         /* webpackChunkName: "ImgGrayscaleProcessing" */ "../views/ImgGrayscaleProcessing.vue"
       ),
   },
+  {
+    path: "/topK",
+    name: "topK",
+    component: () => import(/* webpackChunkName: "TopK" */ "../views/TopK.vue"),
+  },
 ];
 
 const router = new VueRouter({
