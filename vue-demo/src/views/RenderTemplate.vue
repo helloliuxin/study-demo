@@ -1,7 +1,7 @@
 <!--
  * @Author: liuxin
  * @Date: 2021-07-22 14:24:30
- * @LastEditTime: 2021-07-26 13:19:14
+ * @LastEditTime: 2021-07-26 13:29:47
  * @LastEditors: liuxin
  * @Description: 
 -->
@@ -11,7 +11,7 @@
 
 <script>
 import { V2 } from "../components/RenderTemplate";
-// import NewsList from "@/components/FishTemplate/components/NewsList.js";
+import NewsList from "@/components/FishTemplate/components/NewsList.js";
 import VIF from "@/components/RenderTemplate/components/v-if.js";
 
 export default {
@@ -35,16 +35,16 @@ export default {
     };
   },
   async mounted() {
-    // let newslist = await this.getNewsList();
-    // newslist = newslist.result;
-    // console.log(newslist);
+    let newslist = await this.getNewsList();
+    newslist = newslist.result;
+    console.log(newslist);
 
     const v2 = new V2().mounted(this.$el);
     // const { template, info } = this;
     // 渲染模板
     // v2.render(template, info);
-    // v2.render(NewsList, { newslist });
     v2.render(VIF, this.vIfScope);
+    v2.render(NewsList, { newslist });
   },
   methods: {
     getNewsList() {
