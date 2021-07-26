@@ -1,7 +1,7 @@
 <!--
  * @Author: liuxin
  * @Date: 2021-07-14 21:32:48
- * @LastEditTime: 2021-07-21 22:20:44
+ * @LastEditTime: 2021-07-22 14:26:22
  * @LastEditors: liuxin
  * @Description: 主页
 -->
@@ -10,6 +10,8 @@
     <a href="/#/NumBaseConversion"><div class="item">进制转换</div></a>
     <a href="/#/ImgGrayscaleProcessing"><div class="item">图片灰度处理</div></a>
     <a href="/#/TopK"><div class="item">数组中第 K 大的元素</div></a>
+    <a href="/#/FishTemplate"><div class="item">模板引擎实战</div></a>
+    <a href="/#/RenderTemplate"><div class="item">v-if模板渲染</div></a>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 /*
  * @Author: liuxin
  * @Date: 2021-07-14 21:20:08
- * @LastEditTime: 2021-07-14 23:47:34
+ * @LastEditTime: 2021-07-22 14:25:40
  * @LastEditors: liuxin
  * @Description: 路由
  */
@@ -37,6 +37,22 @@ const routes = [
     path: "/topK",
     name: "topK",
     component: () => import(/* webpackChunkName: "TopK" */ "../views/TopK.vue"),
+  },
+  {
+    path: "/fishTemplate",
+    name: "fishTemplate",
+    component: () =>
+      import(
+        /* webpackChunkName: "FishTemplate" */ "../views/FishTemplate.vue"
+      ),
+  },
+  {
+    path: "/renderTemplate",
+    name: "renderTemplate",
+    component: () =>
+      import(
+        /* webpackChunkName: "RenderTemplate" */ "../views/RenderTemplate.vue"
+      ),
   },
 ];
 
