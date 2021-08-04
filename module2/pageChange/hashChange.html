@@ -1,0 +1,161 @@
+<!--
+ * @Author: liuxin
+ * @Date: 2021-08-04 13:41:02
+ * @LastEditTime: 2021-08-04 15:43:01
+ * @LastEditors: liuxin
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hashChange</title>
+    <style>
+      a {
+        display: block;
+        padding: 10px;
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div>改变页面hash的方法</div>
+    <div><a onclick="pushState()">1. history.pushState()</a></div>
+    <div><a onclick="replaceState()">2. history.replaceState()</a></div>
+    <div><a onclick="back()">3. history.back()</a></div>
+    <div><a onclick="go()">4. history.go()</a></div>
+    <div><a onclick="forward()">5. history.forward()</a></div>
+    <div><a onclick="hrefjump()">6. location.href</a></div>
+    <div><a onclick="assign()">7. location.assign()</a></div>
+    <div><a onclick="replace()">8. location.replace()</a></div>
+
+    <script>
+      function urlReroute() {
+        console.log("arguments ==> ", arguments);
+      }
+
+      function patchedUpdateState(updateState, methodName) {
+        return function () {
+          const urlBefore = window.location.href;
+          const result = updateState.apply(this, arguments);
+          const urlAfter = window.location.href;
+
+          window.dispatchEvent(
+            createPopStateEvent(window.history.state, methodName)
+          );
+
+          return result;
+        };
+      }
+
+      function createPopStateEvent(state, originalMethodName) {
+        let evt;
+        try {
+          evt = new PopStateEvent("popstate", { state });
+        } catch (err) {
+          evt = document.createEvent("PopStateEvent");
+          evt.initPopStateEvent("popstate", false, false, state);
+        }
+        evt.singleSpa = true;
+        evt.singleSpaTrigger = originalMethodName;
+        return evt;
+      }
+
+      window.addEventListener("hashchange", urlReroute);
+      window.addEventListener("popstate", urlReroute);
+      const originalRemoveEventListener = window.removeEventListener;
+      window.addEventListener = function (eventName, fn) {
+        if (typeof fn === "function") {
+          /* 如果用户监听的是 hashchange 和 popstate 事件，并且这个监听器此前未加入事件监听列表
+                  那这个事件时有可能引发应用变更的，需要加入 capturedEventListeners 中直接 return 掉，
+                  说明 hashchange 和 popstate 事件并没有马上执行, 而是在执行完 reroute 逻辑之后在执行 */
+          if (
+            routingEventsListeningTo.indexOf(eventName) >= 0 &&
+            !find(
+              capturedEventListeners[eventName],
+              (listener) => listener === fn
+            )
+          ) {
+            capturedEventListeners[eventName].push(fn);
+            return;
+          }
+        }
+        return originalAddEventListener.apply(this, arguments);
+      };
+      window.removeEventListener = function (eventName, listenerFn) {
+        if (typeof listenerFn === "function") {
+          if (routingEventsListeningTo.indexOf(eventName) >= 0) {
+            capturedEventListeners[eventName] = capturedEventListeners[
+              eventName
+            ].filter((fn) => fn !== listenerFn);
+            return;
+          }
+        }
+        return originalRemoveEventListener.apply(this, arguments);
+      };
+      // patchedUpdateState: 对原生的window.history.pushState 和 window.history.replaceState做加强
+      // 使其能触发 popstate事件
+      window.history.pushState = patchedUpdateState(
+        window.history.pushState,
+        "pushState"
+      );
+      window.history.replaceState = patchedUpdateState(
+        window.history.replaceState,
+        "replaceState"
+      );
+    </script>
+
+    <script>
+      function resolveUrl(hash) {
+        return (
+          location.origin + location.pathname + location.search + "#/" + hash
+        );
+      }
+      function pushState() {
+        history.pushState({ state: 1 }, "state1", resolveUrl("state1"));
+        logHistory();
+      }
+
+      function replaceState() {
+        history.replaceState({ state: 2 }, "state2", resolveUrl("state2"));
+        logHistory();
+      }
+
+      function back() {
+        history.back();
+        logHistory();
+      }
+
+      function go() {
+        history.go(-1);
+        logHistory();
+      }
+
+      function forward() {
+        history.forward();
+        logHistory();
+      }
+
+      function hrefjump() {
+        location.href = resolveUrl("state_href");
+        logHistory();
+      }
+
+      function assign() {
+        location.assign(resolveUrl("state_assign"));
+        logHistory();
+      }
+
+      function replace() {
+        location.replace(resolveUrl("state_replace"));
+        logHistory();
+      }
+
+      function logHistory() {
+        console.log("history.length ==> ", history.length);
+      }
+    </script>
+  </body>
+</html>
